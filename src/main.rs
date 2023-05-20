@@ -8,7 +8,7 @@ use std::time::Duration;
 
 use colorgrad::{CustomGradient, Gradient};
 
-use rocket::fs::FileServer;
+use rocket::fs::{relative, FileServer};
 use rocket::serde::json::Json;
 use sacn_unofficial::packet::ACN_SDT_MULTICAST_PORT;
 use sacn_unofficial::source::SacnSource;
@@ -163,7 +163,7 @@ async fn main() {
     rocket::build()
         .manage(shared_state)
         .mount("/api", routes![read, write, read_gradient, write_gradient])
-        .mount("/", FileServer::from("public"))
+        .mount("/", FileServer::from(relative!("public")))
         .launch()
         .await
         .unwrap();
